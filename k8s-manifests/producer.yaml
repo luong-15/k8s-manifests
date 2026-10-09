@@ -15,6 +15,13 @@ spec:
       containers:
       - name: producer
         image: luongmn15/order-producer:v1.0.0
+        resources:          
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
         env:
         - name: KAFKA_BROKER
           value: "kafka:9092"
