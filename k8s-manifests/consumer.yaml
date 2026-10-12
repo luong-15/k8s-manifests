@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-consumer
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-consumer
+  template:
+    metadata:
+      labels:
+        app: notification-consumer
+    spec:
+      containers:
+      - name: consumer
+        image: luongmn15/notification-consumer:v1.0.0
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
+        env:
+        - name: KAFKA_BROKER
+          value: "kafka:9092"

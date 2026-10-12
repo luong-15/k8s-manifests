@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: order-notification
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io   # xoá Application => xoá luôn tài nguyên trong cluster
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/luong-15/k8s-manifests.git
+    targetRevision: main
+    path: k8s-manifests            # thư mục chứa kafka.yaml, producer.yaml, consumer.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: order-system
+  syncPolicy:
+    automated:
+      prune: true                  # xoá tài nguyên khi bị xoá khỏi Git
+      selfHeal: true               # tự khôi phục nếu ai đó sửa tay trong cluster
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
