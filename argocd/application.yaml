@@ -13,7 +13,7 @@ spec:
     path: k8s-manifests            # thư mục chứa kafka.yaml, producer.yaml, consumer.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: order-system
+    namespace: default
   syncPolicy:
     automated:
       prune: true                  # xoá tài nguyên khi bị xoá khỏi Git
